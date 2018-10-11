@@ -58,3 +58,4 @@ if [ -z "$filename" ]; then
 	exit 3
 fi
 
+sed -e 's/[^0-9]//g'
