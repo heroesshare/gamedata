@@ -164,8 +164,9 @@ sudo chmod -R 775 "$sourceAppDir"
 
 # open for verification
 echo "[`date`] Opening source ROOT for verification:"
-echo "[`date`] 1. Verify heroprotocol/ files"
-echo "[`date`] 2. Verify version.txt content (no newline)"
+echo "[`date`] 1. Verify heroprotocol/rejoinprotocol.py exists"
+echo "[`date`] 2. Verify heroprotocol/protocol${protocolLatest}.py exists"
+echo "[`date`] 3. Verify version.txt reads '${versionLatest}' (no newline)"
 
 open "$sourceAppDir"
 read -p "Press enter to continue, Ctrl+C to abort"
@@ -189,7 +190,7 @@ if [ ! -f "$HOME/Desktop/HeroesShareLive.pkg" ]; then
 fi
 
 echo "[`date`] Uploading package..."
-scp "~/Desktop/HeroesShareLive.pkg" ec2-user@tat.red:"~/vhosts/heroesshare.net/assets/clients/"
+scp "$HOME/Desktop/HeroesShareLive.pkg" ec2-user@tat.red:"~/vhosts/heroesshare.net/assets/clients/"
 
 echo "[`date`] Compressing source..."
 cd "$composerDir"
