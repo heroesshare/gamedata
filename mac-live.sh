@@ -15,7 +15,7 @@ if [ ! -d "$liveMacDir" ]; then
 	exit 1
 fi
 
-composerDir="/Library/Application Support/JAMF/Sources"
+composerDir="/Library/Application Support/JAMF/Composer/Sources"
 if [ ! -d "$composerDir" ]; then
 	echo "[`date`] ERROR: Unmet requirement: missing Composer sources directory '$composerDir'"
 	exit 1
