@@ -157,17 +157,27 @@ sudo cp -R "$liveMacDir/heroprotocol" "$sourceAppDir/"
 sudo cp -R "$liveMacDir/version.txt" "$sourceAppDir/"
 sudo cp -R "$liveMacDir/rejoinprotocol.py" "$sourceAppDir/heroprotocol/"
 
-# remove git files from source heroprotocol
-sudo rm -f "$sourceAppDir/heroprotocol/.git*"
+# set ownership
+sudo chown -R root:admin "$sourceAppDir"
+# set permission
+sudo chmod -R 775 "$sourceAppDir"
+
+# open for verification
+echo "[`date`] Opening source ROOT for verification:"
+echo "[`date`] 1. Verify heroprotocol/ files"
+echo "[`date`] 2. Verify version.txt content (no newline)"
+
+open "$sourceAppDir"
+read -p "Press enter to continue, Ctrl+C to abort"
 
 
 ### COMPOSER ###
 
 echo "[`date`] Launching Composer:"
-echo "[`date`] 1. Set permissions to root:admin, 775 on Heroes Share and below"
-echo "[`date`] 2. Verify heroprotocol/ files"
-echo "[`date`] 3. Verify version.txt content (no newline)"
-echo "[`date`] 4. Build package to ~/Desktop"
+echo "[`date`] 1. Verify permissions"
+echo "[`date`] 2. Build package to ~/Desktop"
+
+open -a "Composer"
 read -p "Press enter to continue, Ctrl+C to abort"
 
 
@@ -179,7 +189,7 @@ if [ ! -f "$HOME/Desktop/HeroesShareLive.pkg" ]; then
 fi
 
 echo "[`date`] Uploading package..."
-scp "$HOME/Desktop/HeroesShareLive.pkg" ec2-user@tat.red:vhosts/heroesshare.net/assets/clients/
+scp "~/Desktop/HeroesShareLive.pkg" ec2-user@tat.red:"~/vhosts/heroesshare.net/assets/clients/"
 
 echo "[`date`] Compressing source..."
 cd "$composerDir"
@@ -190,13 +200,13 @@ if [ ! -f "$composerDir/HeroesShareLive.tar.gz" ]; then
 fi
 
 echo "[`date`] Uploading source..."
-scp "$composerDir/HeroesShareLive.tar.gz" ec2-user@tat.red:vhosts/heroesshare.net/assets/clients/
+scp "$composerDir/HeroesShareLive.tar.gz" ec2-user@tat.red:"~/vhosts/heroesshare.net/assets/clients/"
 
 
 ### CLEANUP ###
 rm -f "$HOME/Desktop/HeroesShareLive.pkg"
 rm -f "$composerDir/HeroesShareLive.tar.gz"
-rm -rf "$composerDir/HeroesShareLive"
+sudo rm -rf "$composerDir/HeroesShareLive"
 
 
 ### FOLLOWUP ###
