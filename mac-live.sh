@@ -30,7 +30,7 @@ fi
 
 buildCurrent=`echo $liveMacCurrent | /usr/bin/cut -d . -f 1,2`
 protocolCurrent=`echo $liveMacCurrent | /usr/bin/cut -d . -f 3`
-echo "[`date`] Current version: build $buildCurrent, protocol $protocolCurrent"
+echo "[`date`] Current version: $liveMacCurrent (build $buildCurrent, protocol $protocolCurrent)"
 
 
 ### REPO UPDATES ###
@@ -130,12 +130,14 @@ fi
 
 ### INJECTION ###
 
+cd "$composerDir"
+
 # remove previous versions
-rm -rf "$composerDir/HeroesShareLive"
+echo "[`date`] Removing old files... Please supply sudo password for next few commands:"
+sudo rm -rf "$composerDir/HeroesShareLive"
 
 # extract source files
-cd "$composerDir"
-echo "[`date`] Extracting source... Please supply sudo password:"
+echo "[`date`] Extracting source..."
 sudo tar -xzf HeroesShareLive.tar.gz
 if [ ! -d "$composerDir/HeroesShareLive" ]; then
 	echo "[`date`] ERROR: unable to extract source file '$composerDir/HeroesShareLive.tar.gz'"
