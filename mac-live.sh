@@ -77,15 +77,15 @@ case $protocolLatest in
 esac
 
 # check if current version is latest
-if [ "$currentProtocol" = "$latestProtocol" ]; then
+if [ "$protocolCurrent" = "$protocolLatest" ]; then
 	echo "[`date`] Already current! Quitting."
 	exit 0
 fi
 
 # check if heroprotocol.py changed (requires intervention)
-heroprotocolDiff=`diff "$liveMacDir/heroprotocol/heroprotocol.py" "$heroprotocolBackup"
+heroprotocolDiff=`diff "$liveMacDir/heroprotocol/heroprotocol.py" "$heroprotocolBackup"`
 rm -f "$heroprotocolBackup"
-if [ "$heroprotocolBackup" ]; then
+if [ "$heroprotocolDiff" ]; then
 	echo "[`date`] Updated heroprotocol.py detected! Intervention required:"
 	echo "[`date`] 1. Navigate to repo: '$liveMacDir'"
 	echo "[`date`] 2. Copy heroprotocol/heroprotocol.py to ./rejoinprotocol.py"
@@ -96,7 +96,7 @@ fi
 
 ### UPDATE ###
 
-versionLatest="$buildCurrent.$latestProtocol"
+versionLatest="$buildCurrent.$protocolLatest"
 echo "[`date`] Beginning update to $versionLatest"
 read -p "Press enter to continue, Ctrl+C to abort"
 
@@ -127,8 +127,15 @@ if [ ! -f "$composerDir/HeroesShareLive.tar.gz" ]; then
 	exit 5
 fi
 
-echo "[`date`] Extracting source... Please supply sudo password:"
+
+### INJECTION ###
+
+# remove previous versions
+rm -rf "$composerDir/HeroesShareLive"
+
+# extract source files
 cd "$composerDir"
+echo "[`date`] Extracting source... Please supply sudo password:"
 sudo tar -xzf HeroesShareLive.tar.gz
 if [ ! -d "$composerDir/HeroesShareLive" ]; then
 	echo "[`date`] ERROR: unable to extract source file '$composerDir/HeroesShareLive.tar.gz'"
@@ -175,9 +182,19 @@ scp "$HOME/Desktop/HeroesShareLive.pkg" ec2-user@tat.red:vhosts/heroesshare.net/
 echo "[`date`] Compressing source..."
 cd "$composerDir"
 sudo tar -czf HeroesShareLive.tar.gz HeroesShareLive
+if [ ! -f "$composerDir/HeroesShareLive.tar.gz" ]; then
+	echo "[`date`] ERROR: unable to locate source archive: $composerDir/HeroesShareLive.tar.gz"
+	exit 8
+fi
 
 echo "[`date`] Uploading source..."
-scp "$sourceAppDir/HeroesShareLive.tar.gz" ec2-user@tat.red:vhosts/heroesshare.net/assets/clients/
+scp "$composerDir/HeroesShareLive.tar.gz" ec2-user@tat.red:vhosts/heroesshare.net/assets/clients/
+
+
+### CLEANUP ###
+rm -f "$HOME/Desktop/HeroesShareLive.pkg"
+rm -f "$composerDir/HeroesShareLive.tar.gz"
+rm -rf "$composerDir/HeroesShareLive"
 
 
 ### FOLLOWUP ###
