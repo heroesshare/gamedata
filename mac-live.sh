@@ -179,7 +179,7 @@ echo "[`date`] 1. Verify permissions"
 echo "[`date`] 2. Build package to ~/Desktop"
 
 open -a "Composer"
-read -p "Press enter to continue, Ctrl+C to abort"
+read -p "Quit Composer, then press enter to continue, Ctrl+C to abort"
 
 
 ### ASSET UPLOAD ###
