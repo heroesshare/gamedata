@@ -69,8 +69,12 @@ if [ -z "$filename" ]; then
 	exit 3
 fi
 
+# extract protocol number
 protocolLatest=`echo "$filename" | sed -e 's/[^0-9]//g'`
-echo "[`date`] Most recent protocol version on GitHub: $protocolLatest"
+case $protocolLatest in
+    ''|*[!0-9]*) echo "[`date`] ERROR: invalid protocol returned from heroprotocol: $protocolLatest"; exit 4 ;;
+    *) echo "[`date`] Most recent protocol version on GitHub: $protocolLatest" ;;
+esac
 
 # check if current version is latest
 if [ "$currentProtocol" = "$latestProtocol" ]; then
@@ -120,7 +124,7 @@ echo "[`date`] Fetching Composer source from tat.red..."
 scp ec2-user@tat.red:vhosts/heroesshare.net/assets/clients/HeroesShareLive.tar.gz "$composerDir/"
 if [ ! -f "$composerDir/HeroesShareLive.tar.gz" ]; then
 	echo "[`date`] ERROR: unable to fetch source file from tat.red"
-	exit 4
+	exit 5
 fi
 
 echo "[`date`] Extracting source... Please supply sudo password:"
@@ -128,7 +132,7 @@ cd "$composerDir"
 sudo tar -xzf HeroesShareLive.tar.gz
 if [ ! -d "$composerDir/HeroesShareLive" ]; then
 	echo "[`date`] ERROR: unable to extract source file '$composerDir/HeroesShareLive.tar.gz'"
-	exit 5
+	exit 6
 fi
 sudo rm -f "$composerDir/HeroesShareLive.tar.gz"
 
@@ -160,6 +164,35 @@ read -p "Press enter to continue, Ctrl+C to abort"
 
 ### ASSET UPLOAD ###
 
+if [ ! -f "$HOME/Desktop/HeroesShareLive.pkg" ]; then
+	echo "[`date`] ERROR: unable to locate installer package: $HOME/Desktop/HeroesShareLive.pkg"
+	exit 7
+fi
+
+echo "[`date`] Uploading package..."
+scp "$HOME/Desktop/HeroesShareLive.pkg" ec2-user@tat.red:vhosts/heroesshare.net/assets/clients/
+
 echo "[`date`] Compressing source..."
 cd "$composerDir"
 sudo tar -czf HeroesShareLive.tar.gz HeroesShareLive
+
+echo "[`date`] Uploading source..."
+scp "$sourceAppDir/HeroesShareLive.tar.gz" ec2-user@tat.red:vhosts/heroesshare.net/assets/clients/
+
+
+### FOLLOWUP ###
+
+echo "[`date`] Update complete! Recommended follow up:"
+echo "[`date`] 1. Complete Windows client update"
+echo "[`date`] 2. ssh ec2-user@tat.red"
+echo "[`date`] 3. cd vhosts/heroesshare.net"
+echo "[`date`] 4. git add .; git commit -m '$commentLatest'; git push"
+echo "[`date`] 5. eb deploy"
+echo "[`date`] 6. ./db.sh"
+echo "[`date`] 7m. UPDATE settings SET content='$versionLatest' WHERE id=36 LIMIT 1;"
+echo "[`date`] 7w. UPDATE settings SET content='$versionLatest' WHERE id=35 LIMIT 1;"
+
+read -p "Press enter to SSH to tat.red, Ctrl+C to abort"
+ssh ec2-user@tat.red
+
+exit 0
