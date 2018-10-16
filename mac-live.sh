@@ -1,6 +1,7 @@
 #!/bin/sh
 
 ### REQUIREMENTS ###
+
 echo "[`date`] Checking requirements..."
 
 selfDir="/Library/Git/heroesshare-gamedata"
@@ -34,6 +35,7 @@ echo "[`date`] Current version: $liveMacCurrent (build $buildCurrent, protocol $
 
 
 ### REPO UPDATES ###
+
 echo "[`date`] Checking for self updates..."
 cd "$selfDir"
 git remote update
