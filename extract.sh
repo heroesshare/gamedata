@@ -77,25 +77,17 @@ fi
 
 ### EXTRACTION ###
 
-tmpDir=`mktemp -d`
-echo "[`date`] Extracting to $tmpDir"
-
-"$parserDir/HeroesData" --description 3 --storagePath "$hotsDir" --extract all --json --outputDirectory "$tmpDir" --heroWarnings
-
-echo "[`date`] Moving content into self"
-
 # remove old versions
 rm -rf "$selfDir/HeroesDataParser"
 mkdir "$selfDir/HeroesDataParser"
 
-# move in new versions
-mv "$tmpDir/json" "$selfDir/HeroesDataParser"
-mv "$tmpDir/images" "$selfDir/HeroesDataParser"
+echo "[`date`] Extracting to $selfDir/HeroesDataParser"
+"$parserDir/HeroesData" --description 3 --storagePath "$hotsDir" --extract all --json --outputDirectory "$selfDir/HeroesDataParser" --heroWarnings --localization all
 
 
 ### REPO COMMIT ###
 
-echo "[`date`] Updated game data extracted"
+echo "[`date`] Committing extracted game data"
 
 cd "$selfDir"
 git add .
@@ -104,8 +96,6 @@ git push
 
 
 ### CLEAN UP ###
-echo "[`date`] Cleaning up..."
-rm -rf "$tmpDir"
 echo "[`date`] Game data updated: $selfDir/HeroesDataParser"
 
 exit 0
