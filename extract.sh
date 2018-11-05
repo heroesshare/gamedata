@@ -23,6 +23,7 @@ fi
 repoDir="/Library/Git/HeroesDataParser"
 if [ ! -d "$repoDir" ]; then
 	echo "[`date`] ERROR: Unmet requirement: missing GitHub repo '$repoDir'"
+	echo "[`date`] Please clone from: https://github.com/koliva8245/HeroesDataParser.git"
 	exit 1
 fi
 
@@ -81,7 +82,30 @@ echo "[`date`] Extracting to $tmpDir"
 
 "$parserDir/HeroesData" --description 3 --storagePath "$hotsDir" --extract all --json --outputDirectory "$tmpDir" --heroWarnings
 
-#images/portraits/ui_targetportrait_hero_[hero_name].png
-#images/abilityTalents/*
+echo "[`date`] Moving content into self"
+
+# remove old versions
+rm -rf "$selfDir/HeroesDataParser"
+mkdir "$selfDir/HeroesDataParser"
+
+# move in new versions
+mv "$tmpDir/json" "$selfDir/HeroesDataParser"
+mv "$tmpDir/images" "$selfDir/HeroesDataParser"
+
+
+### REPO COMMIT ###
+
+echo "[`date`] Updated game data extracted"
+
+cd "$selfDir"
+git add .
+git commit -m "Automated update of extracted game data by HeroesDataParser"
+git push
+
+
+### CLEAN UP ###
+echo "[`date`] Cleaning up..."
+rm -rf "$tmpDir"
+echo "[`date`] Game data updated: $selfDir/HeroesDataParser"
 
 exit 0
