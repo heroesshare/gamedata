@@ -29,6 +29,7 @@ fi
 parserDir="$HOME/Library/HeroesDataParser-scd-osx-x64"
 if [ ! -d "$parserDir" ]; then
 	echo "[`date`] ERROR: Unmet requirement: missing parser directory '$parserDir'"
+	echo "[`date`] Download from https://github.com/koliva8245/HeroesDataParser/releases"
 	exit 1
 fi
 
@@ -78,6 +79,9 @@ fi
 tmpDir=`mktemp -d`
 echo "[`date`] Extracting to $tmpDir"
 
-#./HeroesDataParser-scd-osx-x64/HeroesData --description 3 --storagePath "/Applications/Heroes of the Storm Public Test" --extract all --json --outputDirectory ./extracted --heroWarnings
+"$parserDir/HeroesData" --description 3 --storagePath "$hotsDir" --extract all --json --outputDirectory "$tmpDir" --heroWarnings
+
+#images/portraits/ui_targetportrait_hero_[hero_name].png
+#images/abilityTalents/*
 
 exit 0
