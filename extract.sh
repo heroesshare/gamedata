@@ -27,6 +27,13 @@ if [ ! -d "$repoDir" ]; then
 	exit 1
 fi
 
+gamedataDir="/Library/Git/heroes-talents"
+if [ ! -d "$repoDir" ]; then
+	echo "[`date`] ERROR: Unmet requirement: missing GitHub repo '$gamedataDir'"
+	echo "[`date`] Please clone from: https://github.com/tattersoftware/heroes-talents.git"
+	exit 1
+fi
+
 parserDir="$HOME/Library/HeroesDataParser-scd-osx-x64"
 if [ ! -d "$parserDir" ]; then
 	echo "[`date`] ERROR: Unmet requirement: missing parser directory '$parserDir'"
@@ -74,28 +81,46 @@ else
 	echo "[`date`] HeroesDataParser is current, proceeding."
 fi
 
+echo "[`date`] Checking for heroes-talents updates..."
+cd "$gamedataDir"
+git remote update
+repoStatus=`git status -uno | grep behind`
+if [ "$repoStatus" ]; then
+	echo "[`date`] heroes-talents not in sync! Please resolve and re-run... "
+	exit 0
+else
+	echo "[`date`] heroes-talents is in sync, proceeding."
+fi
+
+# make sure to use correct branch
+if [ $ptr -eq 1 ]; then
+	git checkout ptr
+else
+	git checkout master
+fi
+
 
 ### EXTRACTION ###
 
 # remove old versions
-rm -rf "$selfDir/HeroesDataParser"
-mkdir "$selfDir/HeroesDataParser"
+rm -rf "$gamedataDir/raw"
+mkdir "$gamedataDir/raw"
 
-echo "[`date`] Extracting to $selfDir/HeroesDataParser"
-"$parserDir/HeroesData" --description 3 --storagePath "$hotsDir" --extract all --json --outputDirectory "$selfDir/HeroesDataParser" --heroWarnings --localization all
+echo "[`date`] Extracting to $gamedataDir/raw"
+"$parserDir/HeroesData" --description 3 --storagePath "$hotsDir" --extract all --json --outputDirectory "$gamedataDir/HeroesDataParser" --heroWarnings --localization all
 
 
 ### REPO COMMIT ###
 
 echo "[`date`] Committing extracted game data"
 
-cd "$selfDir"
+cd "$gamedataDir"
 git add .
-git commit -m "Automated update of extracted game data by HeroesDataParser"
+git commit -m "Automated update of gamedata extracted by HeroesDataParser"
 git push
 
 
 ### CLEAN UP ###
-echo "[`date`] Game data updated: $selfDir/HeroesDataParser"
+echo "[`date`] Game data updated: $gamedataDir/raw"
 
 exit 0
