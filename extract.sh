@@ -106,7 +106,7 @@ fi
 cd /tmp/
 tmpDir=`mktemp -d`
 echo "[`date`] Extracting to $tmpDir"
-"$parserDir/HeroesData" --description 3 --storagePath "$hotsDir" --extract all --json --outputDirectory "$extractDir/raw" --heroWarnings --localization all
+"$parserDir/HeroesData" --description 3 --storagePath "$hotsDir" --extract all --json --outputDirectory "$tmpDir" --heroWarnings --localization all
 
 # verify status
 if [ $? -ne 0 ]; then
@@ -120,6 +120,13 @@ mkdir "$extractDir/raw"
 
 echo "[`date`] Moving extracted data to $extractDir/raw"
 mv $tmpDir/* "$extractDir/raw/"
+
+# verify move
+if [ $? -ne 0 ]; then
+	echo "[`date`] Move seems to have failed!"
+	read -p "[`date`] Press enter to continue, Ctrl+C to abort"
+fi
+
 
 ### REPO COMMIT ###
 
