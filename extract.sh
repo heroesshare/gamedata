@@ -118,8 +118,8 @@ fi
 rm -rf "$extractDir/raw"
 mkdir "$extractDir/raw"
 
-echo "[`date`] Moving extracted data to $extractDir/raw"
-mv $tmpDir/* "$extractDir/raw/"
+echo "[`date`] Copy extracted data to $extractDir/raw"
+cp -R $tmpDir/* "$extractDir/raw/"
 
 # verify move
 if [ $? -ne 0 ]; then
