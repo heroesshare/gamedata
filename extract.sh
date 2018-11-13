@@ -120,7 +120,6 @@ mkdir "$extractDir/raw"
 
 echo "[`date`] Moving extracted data to $extractDir/raw"
 mv $tmpDir/* "$extractDir/raw/"
-rm -rf $tmpDir
 
 ### REPO COMMIT ###
 
@@ -134,6 +133,8 @@ git push
 
 
 ### CLEAN UP ###
+
+rm -rf $tmpDir
 echo "[`date`] Game data updated: $extractDir/raw"
 
 exit 0
