@@ -107,7 +107,7 @@ rm -rf "$gamedataDir/raw"
 mkdir "$gamedataDir/raw"
 
 echo "[`date`] Extracting to $gamedataDir/raw"
-"$parserDir/HeroesData" --description 3 --storagePath "$hotsDir" --extract all --json --outputDirectory "$gamedataDir/HeroesDataParser" --heroWarnings --localization all
+"$parserDir/HeroesData" --description 3 --storagePath "$hotsDir" --extract all --json --outputDirectory "$gamedataDir/raw" --heroWarnings --localization all
 
 
 ### REPO COMMIT ###
