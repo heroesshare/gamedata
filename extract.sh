@@ -81,6 +81,13 @@ else
 	echo "[`date`] HeroesDataParser is current, proceeding."
 fi
 
+# make sure to use correct branch
+if [ $ptr -eq 1 ]; then
+	git checkout ptr
+else
+	git checkout master
+fi
+
 echo "[`date`] Checking for heroes-talents updates..."
 cd "$gamedataDir"
 git remote update
@@ -90,13 +97,6 @@ if [ "$repoStatus" ]; then
 	exit 0
 else
 	echo "[`date`] heroes-talents is in sync, proceeding."
-fi
-
-# make sure to use correct branch
-if [ $ptr -eq 1 ]; then
-	git checkout ptr
-else
-	git checkout master
 fi
 
 
