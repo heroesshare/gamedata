@@ -27,9 +27,9 @@ if [ ! -d "$repoDir" ]; then
 	exit 1
 fi
 
-gamedataDir="/Library/Git/heroes-talents"
+extractDir="/Library/Git/heroes-talents"
 if [ ! -d "$repoDir" ]; then
-	echo "[`date`] ERROR: Unmet requirement: missing GitHub repo '$gamedataDir'"
+	echo "[`date`] ERROR: Unmet requirement: missing GitHub repo '$extractDir'"
 	echo "[`date`] Please clone from: https://github.com/tattersoftware/heroes-talents.git"
 	exit 1
 fi
@@ -81,6 +81,9 @@ else
 	echo "[`date`] HeroesDataParser is current, proceeding."
 fi
 
+echo "[`date`] Checking for heroes-talents updates..."
+cd "$extractDir"
+
 # make sure to use correct branch
 if [ $ptr -eq 1 ]; then
 	git checkout ptr
@@ -88,8 +91,6 @@ else
 	git checkout master
 fi
 
-echo "[`date`] Checking for heroes-talents updates..."
-cd "$gamedataDir"
 git remote update
 repoStatus=`git status -uno | grep behind`
 if [ "$repoStatus" ]; then
@@ -102,25 +103,37 @@ fi
 
 ### EXTRACTION ###
 
+cd /tmp/
+tmpDir=`mktemp -d`
+echo "[`date`] Extracting to $tmpDir"
+"$parserDir/HeroesData" --description 3 --storagePath "$hotsDir" --extract all --json --outputDirectory "$extractDir/raw" --heroWarnings --localization all
+
+# verify status
+if [ $? -ne 0 ]; then
+	echo "[`date`] Extraction seems to have failed! Check log at /tmp/debug.log"
+	read -p "[`date`] Press enter to continue, Ctrl+C to abort"
+fi
+
 # remove old versions
-rm -rf "$gamedataDir/raw"
-mkdir "$gamedataDir/raw"
+rm -rf "$extractDir/raw"
+mkdir "$extractDir/raw"
 
-echo "[`date`] Extracting to $gamedataDir/raw"
-"$parserDir/HeroesData" --description 3 --storagePath "$hotsDir" --extract all --json --outputDirectory "$gamedataDir/raw" --heroWarnings --localization all
-
+echo "[`date`] Moving extracted data to $extractDir/raw"
+mv $tmpDir/* "$extractDir/raw/"
+rm -rf $tmpDir
 
 ### REPO COMMIT ###
 
 echo "[`date`] Committing extracted game data"
+read -p "[`date`] Press enter to continue, Ctrl+C to abort"
 
-cd "$gamedataDir"
+cd "$extractDir"
 git add .
 git commit -m "Automated update of gamedata extracted by HeroesDataParser"
 git push
 
 
 ### CLEAN UP ###
-echo "[`date`] Game data updated: $gamedataDir/raw"
+echo "[`date`] Game data updated: $extractDir/raw"
 
 exit 0
