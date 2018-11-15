@@ -59,8 +59,10 @@ cd "$selfDir"
 git remote update
 repoStatus=`git status -uno | grep behind`
 if [ "$repoStatus" ]; then
-	echo "[`date`] Self out of date! Updating and quitting... "
+	echo "[`date`] Self out of date! Updating... "
 	git pull
+	
+	echo "[`date`] Self updated. Please rerun to leverage the latest build. "
 	exit 0
 else
 	echo "[`date`] Self is current, proceeding."
@@ -72,10 +74,10 @@ git remote update
 repoStatus=`git status -uno | grep behind`
 if [ "$repoStatus" ]; then
 	echo "[`date`] HeroesDataParser out of date! Updating... "
-	echo "[`date`] Please download the corresponding release into ~/Library:"
-	echo "[`date`] https://github.com/koliva8245/HeroesDataParser/releases"
-
 	git pull
+	
+	echo "[`date`] HeroesDataParser updated. Please download the corresponding release into ~/Library:"
+	echo "[`date`] https://github.com/koliva8245/HeroesDataParser/releases"
 	exit 0
 else
 	echo "[`date`] HeroesDataParser is current, proceeding."
