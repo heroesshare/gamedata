@@ -168,7 +168,7 @@ fi
 # remove old icons
 #rm -rf "$extractDir/images/talents"
 # copy in new
-cp "$tmpdir"/images/abilityTalents/*.png "$extractDir"/images/talents/
+cp "$tmpDir"/images/abilityTalents/*.png "$extractDir"/images/talents/
 
 
 ### REPO COMMIT ###
