@@ -154,7 +154,7 @@ fi
 
 echo "[`date`] Resizing talent icons to 64x64"
 cd "$tmpDir/images/abilityTalents"
-"$magickPath" mogrify -resize 64x64 *.png
+"$magickPath" mogrify -resize 64x64 -strip -depth 8 *.png
 
 # verify status
 if [ $? -ne 0 ]; then
