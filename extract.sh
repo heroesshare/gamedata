@@ -166,7 +166,7 @@ fi
 "$renamePath" "s/'//" *.png
 
 # remove old icons
-#rm -rf "$extractDir/images/talents"
+rm -rf "$extractDir/images/talents"
 # copy in new
 cp "$tmpDir"/images/abilityTalents/*.png "$extractDir"/images/talents/
 
