@@ -60,7 +60,7 @@ if [ ! "$magickPath" ]; then
 fi
 
 renamePath=`which rename`
-if [ ! "$magickPath" ]; then
+if [ ! "$renamePath" ]; then
 	echo "[`date`] ERROR: Unmet requirement: missing dependency 'rename'"
 	echo "[`date`] Recommend 'brew install rename'"
 	exit 1
