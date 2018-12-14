@@ -103,7 +103,7 @@ fi
 ### UPDATE ###
 
 if [ "$1" = "-force" ]; then
-	versionLatest="$2"
+	versionLatest="$buildCurrent.$2"
 else
 	versionLatest="$buildCurrent.$protocolLatest"
 fi
