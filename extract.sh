@@ -34,7 +34,7 @@ if [ ! -d "$repoDir" ]; then
 	exit 1
 fi
 
-parserDir="$HOME/Library/HeroesDataParser-scd-osx-x64"
+parserDir="$HOME/Library/HeroesDataParser"
 if [ ! -d "$parserDir" ]; then
 	echo "[`date`] ERROR: Unmet requirement: missing parser directory '$parserDir'"
 	echo "[`date`] Download from https://github.com/koliva8245/HeroesDataParser/releases"
