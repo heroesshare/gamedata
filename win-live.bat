@@ -58,9 +58,9 @@ echo ***** Updating repo rejoinprotocol.exe - supply Blizzard's comment for auto
 
 copy /Y C:\Users\Administrator\Desktop\heroesshare-tmp\heroprotocol\dist\rejoinprotocol.exe C:\Git\heroesshare-live-win\
 cd C:\Git\heroesshare-live-win\
-REM git add .
-REM git commit
-REM git push
+git add .
+git commit
+git push
 rmdir /S /Q C:\Users\Administrator\Desktop\heroesshare-tmp
 
 @echo off
