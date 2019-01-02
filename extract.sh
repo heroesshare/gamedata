@@ -121,7 +121,7 @@ fi
 cd /tmp/
 tmpDir=`mktemp -d`
 echo "[`date`] Extracting to $tmpDir"
-"$parserDir/HeroesData" --description 3 --storagePath "$hotsDir" --extract all --json --outputDirectory "$tmpDir" --heroWarnings --localization all
+"$parserDir/HeroesData_self" --description 3 --storage-path "$hotsDir" --extract all --output-directory "$tmpDir" --hero-warnings --localization all --json
 
 # verify status
 if [ $? -ne 0 ]; then
