@@ -186,7 +186,8 @@ read -p "Press enter to continue, Ctrl+C to abort"
 
 echo "[`date`] Launching Composer:"
 echo "[`date`] 1. Verify permissions"
-echo "[`date`] 2. Build package to ~/Desktop"
+echo "[`date`] 2. Change latest protocol, line 90 'm_hero' 19 => 6"
+echo "[`date`] 3. Build package to ~/Desktop"
 
 open -a "Composer"
 read -p "Quit Composer, then press enter to continue, Ctrl+C to abort"

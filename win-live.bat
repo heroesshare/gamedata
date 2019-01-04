@@ -38,6 +38,7 @@ copy C:\Git\heroesshare-live-win\logo.ico C:\Users\Administrator\Desktop\heroess
 
 @echo off
 echo ***** Check if heroprotocol.py updated (if so make new rejoinprotocol.py) *****
+echo ***** Change latest protocol, line 90 'm_hero' 19 => 6 *****
 pause
 
 echo ***** Creating parser *****
