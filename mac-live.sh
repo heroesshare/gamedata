@@ -173,7 +173,7 @@ echo "[`date`] Opening source ROOT for verification:"
 echo "[`date`] 1. Verify heroprotocol/rejoinprotocol.py exists"
 echo "[`date`] 2. Verify heroprotocol/protocol${protocolLatest}.py exists"
 echo "[`date`] 3. Verify version.txt reads '${versionLatest}' (no newline)"
-echo "[`date`] 4. Change latest protocol, line 90 'm_hero', 19 to 6"
+echo "[`date`] 4. Change latest protocol: line 90 'm_hero', 19 to 6"
 
 open "$sourceAppDir"
 read -p "Press enter to continue, Ctrl+C to abort"
@@ -226,8 +226,7 @@ echo "[`date`] 3. cd vhosts/heroesshare.net"
 echo "[`date`] 4. git add .; git commit -m '$commentLatest'; git push"
 echo "[`date`] 5. eb deploy"
 echo "[`date`] 6. ./db.sh"
-echo "[`date`] 7m. UPDATE settings SET content='$versionLatest' WHERE id=36 LIMIT 1;"
-echo "[`date`] 7w. UPDATE settings SET content='$versionLatest' WHERE id=35 LIMIT 1;"
+echo "[`date`] 7. UPDATE settings SET content='$versionLatest' WHERE name='Client version mac' LIMIT 1; UPDATE settings SET content='$versionLatest' WHERE name='Client version win' LIMIT 1;"
 
 read -p "Press enter to SSH to tat.red, Ctrl+C to abort"
 ssh ec2-user@tat.red

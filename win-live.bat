@@ -27,6 +27,7 @@ echo ***** Current version: *****
 type C:\Git\heroesshare-live-win\version.txt
 echo. 
 
+echo ***** Check if heroprotocol.py updated (if so make new rejoinprotocol.py) *****
 echo ***** Update repo version.txt to build.protocol. Next: Generating workspace in Desktop\heroesshare-tmp... *****
 pause
 
@@ -37,8 +38,7 @@ copy C:\Git\heroesshare-live-win\rejoinprotocol.py C:\Users\Administrator\Deskto
 copy C:\Git\heroesshare-live-win\logo.ico C:\Users\Administrator\Desktop\heroesshare-tmp\
 
 @echo off
-echo ***** Check if heroprotocol.py updated (if so make new rejoinprotocol.py) *****
-echo ***** Change latest protocol, line 90 'm_hero' 19 to 6 *****
+echo ***** Change latest protocol in heroesshare-tmp, line 90 'm_hero' 19 to 6 *****
 pause
 
 echo ***** Creating parser *****
