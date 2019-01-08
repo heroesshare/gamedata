@@ -80,12 +80,7 @@ esac
 
 # check if current version is latest
 if [ "$protocolCurrent" = "$protocolLatest" ]; then
-	if [ "$1" = "-force" ]; then
-		echo "[`date`] Already current, but force mode detected. Proceeding..."
-	else
-		echo "[`date`] Already current! Quitting. (Use -force [version] to override)"
-		exit 0
-	fi
+	echo "[`date`] Note: already on current version."
 fi
 
 # check if heroprotocol.py changed (requires intervention)
@@ -103,6 +98,7 @@ fi
 ### UPDATE ###
 
 if [ "$1" = "-force" ]; then
+	echo "[`date`] Force mode detected! Using protocol $2..."
 	versionLatest="$buildCurrent.$2"
 else
 	versionLatest="$buildCurrent.$protocolLatest"
