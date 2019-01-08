@@ -173,6 +173,7 @@ echo "[`date`] Opening source ROOT for verification:"
 echo "[`date`] 1. Verify heroprotocol/rejoinprotocol.py exists"
 echo "[`date`] 2. Verify heroprotocol/protocol${protocolLatest}.py exists"
 echo "[`date`] 3. Verify version.txt reads '${versionLatest}' (no newline)"
+echo "[`date`] 4. Change latest protocol, line 90 'm_hero', 19 to 6"
 
 open "$sourceAppDir"
 read -p "Press enter to continue, Ctrl+C to abort"
@@ -182,7 +183,6 @@ read -p "Press enter to continue, Ctrl+C to abort"
 
 echo "[`date`] Launching Composer:"
 echo "[`date`] 1. Verify permissions"
-echo "[`date`] 2. Change latest protocol, line 90 'm_hero' 19 => 6"
 echo "[`date`] 3. Build package to ~/Desktop"
 
 open -a "Composer"
