@@ -90,7 +90,7 @@ if [ "$heroprotocolDiff" ]; then
 	echo "[`date`] Updated heroprotocol.py detected! Intervention required:"
 	echo "[`date`] 1. Navigate to repo: '$liveMacDir'"
 	echo "[`date`] 2. Copy heroprotocol/heroprotocol.py to ./rejoinprotocol.py"
-	echo "[`date`] 3. Edit rejoinprotocol.py (replay.details > save.details, replay.initData > save.initData)"
+	echo "[`date`] 3. Edit rejoinprotocol.py (replay.details & initData > save, update latest known protocol)"
 	read -p "Press enter to continue, Ctrl+C to abort"
 fi
 
