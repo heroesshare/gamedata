@@ -121,16 +121,16 @@ fi
 cd /tmp/
 tmpDir=`mktemp -d`
 echo "[`date`] Extracting to $tmpDir"
-"$parserDir/heroesdata" --description 3 --storage-path "$hotsDir" --extract all --output-directory "$tmpDir" --hero-warnings --localization all --build 99999 --json
+"$parserDir/heroesdata" "$hotsDir" --output-directory "$tmpDir" --description 3 --extract-data all --extract-images all --localization all --json --warnings
 
 # verify status
 if [ $? -ne 0 ]; then
-	echo "[`date`] Extraction seems to have failed! Check log at /tmp/debug.log"
+	echo "[`date`] Extraction seems to have failed! Check log at /tmp/debug.log or Library/HeroesDataParser/debug.log"
 	read -p "[`date`] Press enter to continue, Ctrl+C to abort"
 fi
 
 # show diff of extracted JSON data
-diff "$extractDir"/raw/json/heroesdata_*_enus.json "$tmpDir"/json/heroesdata_*_enus.json | less
+diff "$extractDir"/raw/json/herodata_*_enus.json "$tmpDir"/json/herodata_*_enus.json | less
 
 # wait for approval
 echo "[`date`] Ready to copy extracted data to $extractDir/raw"
@@ -152,7 +152,7 @@ fi
 ### IMAGE RESIZE
 
 echo "[`date`] Resizing talent icons to 64x64"
-cd "$tmpDir/images/abilityTalents"
+cd "$tmpDir/images/abilitytalents"
 "$magickPath" mogrify -resize 64x64 -strip -depth 8 *.png
 
 # verify status
@@ -169,7 +169,7 @@ rm -rf "$extractDir/images/talents"
 mkdir -p "$extractDir"/images/talents/
 
 # copy in new
-cp "$tmpDir"/images/abilityTalents/*.png "$extractDir"/images/talents/
+cp "$tmpDir"/images/abilitytalents/*.png "$extractDir"/images/talents/
 
 
 ### REPO COMMIT ###
