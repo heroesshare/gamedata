@@ -121,6 +121,7 @@ fi
 cd /tmp/
 tmpDir=`mktemp -d`
 echo "[`date`] Extracting to $tmpDir"
+chmod +x "$parserDir/heroesdata"
 "$parserDir/heroesdata" "$hotsDir" --output-directory "$tmpDir" --description 3 --extract-data all --extract-images all --localization all --json --warnings
 
 # verify status
@@ -174,14 +175,19 @@ cp "$tmpDir"/images/abilitytalents/*.png "$extractDir"/images/talents/
 
 ### REPO COMMIT ###
 
-echo "[`date`] Committing extracted game data"
+#echo "[`date`] Committing extracted game data"
+#read -p "[`date`] Press enter to continue, Ctrl+C to abort"
+
+#cd "$extractDir"
+#git add .
+#git commit -m "Automated update of gamedata extracted by HeroesDataParser"
+#git push
+
+### COPY TO SERVER
+echo "[`date`] Copying extracted data to server for import"
 read -p "[`date`] Press enter to continue, Ctrl+C to abort"
 
-cd "$extractDir"
-git add .
-git commit -m "Automated update of gamedata extracted by HeroesDataParser"
-git push
-
+scp -r "$extractDir" ec2-user@tat.red:/tmp/extracted-talents
 
 ### CLEAN UP ###
 
