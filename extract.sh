@@ -27,7 +27,7 @@ if [ ! -d "$repoDir" ]; then
 	exit 1
 fi
 
-talentsDirDir="/Library/Git/heroes-talents"
+talentsDir="/Library/Git/heroes-talents"
 if [ ! -d "$talentsDir" ]; then
 	echo "[`date`] ERROR: Unmet requirement: missing GitHub repo '$talentsDir'"
 	echo "[`date`] Please clone from: https://github.com/tattersoftware/heroes-talents.git"
