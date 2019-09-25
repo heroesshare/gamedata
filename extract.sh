@@ -27,9 +27,9 @@ if [ ! -d "$repoDir" ]; then
 	exit 1
 fi
 
-extractDir="/Library/Git/heroes-talents"
-if [ ! -d "$repoDir" ]; then
-	echo "[`date`] ERROR: Unmet requirement: missing GitHub repo '$extractDir'"
+talentsDirDir="/Library/Git/heroes-talents"
+if [ ! -d "$talentsDir" ]; then
+	echo "[`date`] ERROR: Unmet requirement: missing GitHub repo '$talentsDir'"
 	echo "[`date`] Please clone from: https://github.com/tattersoftware/heroes-talents.git"
 	exit 1
 fi
@@ -97,7 +97,7 @@ else
 fi
 
 echo "[`date`] Checking for heroes-talents updates..."
-cd "$extractDir"
+cd "$talentsDir"
 
 # make sure to use correct branch
 if [ $ptr -eq 1 ]; then
@@ -131,17 +131,15 @@ if [ $? -ne 0 ]; then
 fi
 
 # show diff of extracted JSON data
-diff "$extractDir"/raw/json/herodata_*_enus.json "$tmpDir"/json/herodata_*_enus.json | less
+diff "$talentsDir"/raw/json/herodata_*_enus.json "$tmpDir"/json/herodata_*_enus.json | less
 
 # wait for approval
-echo "[`date`] Ready to copy extracted data to $extractDir/raw"
+echo "[`date`] Ready to copy extracted data to $tmpDir/extracted"
 read -p "[`date`] Press enter to continue, Ctrl+C to abort"
 
-# remove old versions
-rm -rf "$extractDir/raw"
-mkdir "$extractDir/raw"
-
-cp -R "$tmpDir"/* "$extractDir"/raw/
+# copy to upload directory
+mkdir -p "$tmpDir"/extracted-talents/raw
+cp -R "$tmpDir"/* "$tmpDir"/extracted-talents/raw
 
 # verify move
 if [ $? -ne 0 ]; then
@@ -165,29 +163,15 @@ fi
 # remove apostrophes from filenames (mostly Kel'Thuzad)
 "$renamePath" "s/'//" *.png
 
-# remove old icons
-rm -rf "$extractDir/images/talents"
-mkdir -p "$extractDir"/images/talents/
-
-# copy in new
-cp "$tmpDir"/images/abilitytalents/*.png "$extractDir"/images/talents/
-
-
-### REPO COMMIT ###
-
-#echo "[`date`] Committing extracted game data"
-#read -p "[`date`] Press enter to continue, Ctrl+C to abort"
-
-#cd "$extractDir"
-#git add .
-#git commit -m "Automated update of gamedata extracted by HeroesDataParser"
-#git push
+# copy to upload directory
+mkdir -p "$tmpDir"/extracted-talents/talents
+cp "$tmpDir"/images/abilitytalents/*.png "$tmpDir"/extracted-talents/talents/
 
 ### COPY TO SERVER
 echo "[`date`] Copying extracted data to server for import"
 read -p "[`date`] Press enter to continue, Ctrl+C to abort"
 
-scp -r "$extractDir" ec2-user@tat.red:/tmp/extracted-talents
+scp -r "$tmpDir"/extracted-talents ec2-user@tat.red:/tmp/
 
 ### CLEAN UP ###
 
