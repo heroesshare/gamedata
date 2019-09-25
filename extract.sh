@@ -172,7 +172,7 @@ cp "$tmpDir"/images/abilitytalents/*.png "$uploadDir"/talents/
 echo "[`date`] Copying extracted data to server for import"
 read -p "[`date`] Press enter to continue, Ctrl+C to abort"
 
-scp -r "$uploadDir" ec2-user@tat.red:/tmp/extracted-talents
+scp -qr "$uploadDir" ec2-user@tat.red:/tmp/extracted-talents
 
 ### CLEAN UP ###
 
