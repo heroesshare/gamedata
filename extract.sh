@@ -134,12 +134,13 @@ fi
 diff "$talentsDir"/raw/json/herodata_*_enus.json "$tmpDir"/json/herodata_*_enus.json | less
 
 # wait for approval
-echo "[`date`] Ready to copy extracted data to $tmpDir/extracted"
+uploadDir=`mktemp -d`
+echo "[`date`] Ready to copy extracted data to $uploadDir/extracted-talents"
 read -p "[`date`] Press enter to continue, Ctrl+C to abort"
 
 # copy to upload directory
-mkdir -p "$tmpDir"/extracted-talents/raw
-cp -R "$tmpDir"/* "$tmpDir"/extracted-talents/raw
+mkdir -p "$uploadDir"/raw
+cp -R "$tmpDir"/* "$uploadDir"/raw/
 
 # verify move
 if [ $? -ne 0 ]; then
@@ -164,18 +165,19 @@ fi
 "$renamePath" "s/'//" *.png
 
 # copy to upload directory
-mkdir -p "$tmpDir"/extracted-talents/talents
-cp "$tmpDir"/images/abilitytalents/*.png "$tmpDir"/extracted-talents/talents/
+mkdir -p "$uploadDir"/talents
+cp "$tmpDir"/images/abilitytalents/*.png "$uploadDir"/talents/
 
 ### COPY TO SERVER
 echo "[`date`] Copying extracted data to server for import"
 read -p "[`date`] Press enter to continue, Ctrl+C to abort"
 
-scp -r "$tmpDir"/extracted-talents ec2-user@tat.red:/tmp/
+scp -r "$uploadDir" ec2-user@tat.red:/tmp/extracted-talents
 
 ### CLEAN UP ###
 
-rm -rf $tmpDir
-echo "[`date`] Game data updated: $extractDir/raw"
+rm -rf "$tmpDir"
+rm -rf "$uploadDir"
+echo "[`date`] Game data uploaded to server"
 
 exit 0
